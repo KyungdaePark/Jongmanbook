@@ -1,0 +1,66 @@
+
+#include<iostream>
+using namespace std;
+
+int C,n,m;
+bool arefriends[10][10];
+bool people[10];
+int MakeFriends(){//넘겨주는건 다음 사람 
+	int count = 0;
+	int idx;
+	bool allpicked = true; //alltrue가 false 여
+	for(int k=0;k<n;k++){
+		if(people[k]==true){
+			allpicked = false;
+			idx = k;
+			break;
+		}
+	}
+	if(allpicked) { 
+		return 1;
+	}
+	
+	for(int i=idx;i<n;i++){
+		if(people[i] && arefriends[idx][i]){
+			people[i] = people[idx] = false;
+			count+=MakeFriends();	
+			people[i]=people[idx] = true;
+		}
+	}
+	return count;
+}
+
+	
+	
+
+
+int main(){
+	//bool people[10];
+	int p1,p2;
+	cin>>C;
+	for(int i=0;i<C;i++){
+		
+		for(int j=0;j<10;j++){
+			for(int k=0;k<10;k++){
+				arefriends[j][k]=false;
+			}
+		}
+		for(int j=0;j<10;j++){
+			people[j]=false;
+		}
+		cin>>n>>m;
+		for(int j=0;j<n;j++){
+			people[j]=true;
+		} //사람 넣기
+		
+		for(int j=0;j<m;j++){
+			cin>>p1>>p2;
+			int t1,t2;
+			t1 = p1<p2?p1:p2;
+			t2 = p1<p2?p2:p1;
+			arefriends[t1][t2] = true; //친구끼리 true 넣어주기
+			
+		}
+		cout<<MakeFriends()<<endl;
+	}
+}
